@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="light dark">
+  <title>Vimeo Grab</title>
+  <link rel="stylesheet" href="popup.css">
+  <script type="module" src="popup.js"></script>
+</head>
+<body>
+  <svg hidden aria-hidden="true">
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.6-4.5L4 8m0-4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16m0 4v-4h-4"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11m-5-5 5 5 5-5M5 20h14"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M14 4h6v6m0-6-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 9V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h4"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  </svg>
+
+  <header class="top">
+    <img class="logo" src="../icons/48.png" alt="" width="30" height="30">
+    <div class="heading">
+      <h1>Vimeo Grab</h1>
+      <p id="page-line" class="page-line">Looking for videos…</p>
+    </div>
+    <button id="rescan" class="icon-button" type="button" title="Scan this page again" aria-label="Scan this page again">
+      <svg aria-hidden="true"><use href="#i-refresh"/></svg>
+    </button>
+    <button id="settings" class="icon-button" type="button" title="Settings" aria-label="Settings">
+      <svg aria-hidden="true"><use href="#i-settings"/></svg>
+    </button>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Views">
+    <button id="tab-videos" type="button" role="tab" aria-selected="true" aria-controls="view-videos">
+      This page <span id="video-count" class="tab-count"></span>
+    </button>
+    <button id="tab-downloads" type="button" role="tab" aria-selected="false" aria-controls="view-downloads" tabindex="-1">
+      Downloads <span id="job-count" class="tab-count"></span>
+    </button>
+  </nav>
+
+  <main>
+    <section id="view-videos" role="tabpanel" aria-labelledby="tab-videos">
+      <form id="add-form" class="add-form" autocomplete="off">
+        <label class="sr-only" for="add-url">Vimeo link</label>
+        <input id="add-url" type="text" inputmode="url" placeholder="Paste a Vimeo link to add it" spellcheck="false">
+        <button type="submit" class="secondary">Add</button>
+      </form>
+
+      <div id="notice" class="notice" role="status" hidden></div>
+
+      <div id="toolbar" class="toolbar" hidden>
+        <label class="check-all"><input id="select-all" type="checkbox"> <span>Select all</span></label>
+        <label for="quality" class="quality-label">Quality</label>
+        <select id="quality"></select>
+      </div>
+
+      <div id="videos" class="list"></div>
+
+      <div id="loading" class="empty" hidden>
+        <span class="spinner" aria-hidden="true"></span>
+        <p>Scanning this page…</p>
+      </div>
+      <div id="empty" class="empty" hidden>
+        <h2>No Vimeo videos found</h2>
+        <p>Scroll to load more of the page or press play once, then scan again. You can also paste a link above.</p>
+      </div>
+    </section>
+
+    <section id="view-downloads" role="tabpanel" aria-labelledby="tab-downloads" hidden>
+      <div class="list-header">
+        <span id="downloads-summary"></span>
+        <button id="clear" class="text-button" type="button">Clear finished</button>
+      </div>
+      <div id="jobs" class="list"></div>
+      <div id="jobs-empty" class="empty">
+        <h2>No downloads yet</h2>
+        <p>Videos you download appear here, from every tab. Downloads keep going when this popup is closed.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <button id="download-selected" class="primary" type="button" disabled>
+      <svg aria-hidden="true"><use href="#i-download"/></svg>
+      <span id="download-label">Download selected</span>
+    </button>
+    <button id="download-all" class="secondary" type="button" disabled>Download all</button>
+  </footer>
+
+  <p id="announcer" class="sr-only" aria-live="polite"></p>
+
+  <template id="video-template">
+    <article class="card">
+      <label class="pick"><input type="checkbox" class="pick-box"><span class="sr-only pick-label">Select video</span></label>
+      <div class="thumb"><img alt="" referrerpolicy="no-referrer"><span class="duration"></span></div>
+      <div class="body">
+        <h2 class="title"></h2>
+        <p class="meta"></p>
+        <div class="controls">
+          <select class="format" aria-label="Quality for this video"></select>
+          <button class="icon-button small open" type="button" title="Open on Vimeo" aria-label="Open on Vimeo">
+            <svg aria-hidden="true"><use href="#i-open"/></svg>
+          </button>
+          <button class="icon-button small copy" type="button" title="Copy link" aria-label="Copy link">
+            <svg aria-hidden="true"><use href="#i-copy"/></svg>
+          </button>
+          <button class="icon-button small save" type="button" title="Download this video" aria-label="Download this video">
+            <svg aria-hidden="true"><use href="#i-download"/></svg>
+          </button>
+        </div>
+        <div class="status" hidden>
+          <div class="status-line">
+            <span class="status-text"></span>
+            <button class="text-button cancel" type="button" hidden>Cancel</button>
+            <button class="text-button retry" type="button" hidden>Retry</button>
+            <button class="text-button show" type="button" hidden>Show in folder</button>
+          </div>
+          <progress max="100" hidden></progress>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <template id="job-template">
+    <article class="card job">
+      <div class="thumb small"><img alt="" referrerpolicy="no-referrer"></div>
+      <div class="body">
+        <div class="job-head">
+          <h2 class="title"></h2>
+          <button class="icon-button small remove" type="button" title="Remove from list" aria-label="Remove from list">
+            <svg aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
+        <p class="meta filename"></p>
+        <div class="status">
+          <div class="status-line">
+            <span class="status-text"></span>
+            <button class="text-button cancel" type="button" hidden>Cancel</button>
+            <button class="text-button retry" type="button" hidden>Retry</button>
+            <button class="text-button show" type="button" hidden>Show in folder</button>
+          </div>
+          <progress max="100" hidden></progress>
+        </div>
+      </div>
+    </article>
+  </template>
+</body>
+</html>

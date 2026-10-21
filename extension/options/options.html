@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Vimeo Grab settings</title>
+  <link rel="stylesheet" href="options.css">
+  <script type="module" src="options.js"></script>
+</head>
+<body>
+  <main>
+    <header class="masthead">
+      <img src="../icons/128.png" alt="" width="48" height="48">
+      <div>
+        <h1>Vimeo Grab</h1>
+        <p>Settings save automatically. <span id="saved" class="saved" role="status"></span></p>
+      </div>
+    </header>
+
+    <section class="panel intro">
+      <h2>How to use it</h2>
+      <ol>
+        <li>Open a page with a Vimeo video, then click the Vimeo Grab icon (or press <kbd id="shortcut">Alt+Shift+V</kbd>).</li>
+        <li>Pick the videos and quality you want, then click <strong>Download</strong>.</li>
+        <li>You can also right-click a Vimeo link, paste a link into the popup, or keep browsing: downloads continue in the background.</li>
+      </ol>
+      <p class="hint">Tip: pin the extension from Chrome’s puzzle-piece menu so it’s one click away.</p>
+    </section>
+
+    <form id="settings" class="panel" novalidate>
+      <h2>Downloads</h2>
+
+      <div class="field">
+        <label for="quality">Default quality</label>
+        <select id="quality" name="quality"></select>
+        <p class="hint">“Up to” picks the best version at or below that size. Videos are saved without re-encoding.</p>
+      </div>
+
+      <div class="field">
+        <label for="folder">Save inside your Downloads folder in</label>
+        <input id="folder" name="folder" type="text" placeholder="Leave empty to save directly in Downloads" spellcheck="false">
+        <p class="hint">Use slashes for subfolders, for example <code>Vimeo/Courses</code>.</p>
+      </div>
+
+      <div class="field">
+        <label for="template">File name</label>
+        <input id="template" name="template" type="text" spellcheck="false">
+        <p class="hint">Tokens: <button type="button" class="token">{title}</button> <button type="button" class="token">{id}</button>
+          <button type="button" class="token">{quality}</button> <button type="button" class="token">{owner}</button>
+          <button type="button" class="token">{date}</button> <button type="button" class="token">{site}</button></p>
+        <p class="preview">Example: <span id="preview"></span></p>
+      </div>
+
+      <label class="check"><input id="saveAs" name="saveAs" type="checkbox"> Ask where to save each file</label>
+      <label class="check"><input id="metadata" name="metadata" type="checkbox"> Write the title, creator and public video link into the file’s tags</label>
+
+      <div class="field">
+        <label for="concurrency">Videos downloaded at the same time</label>
+        <select id="concurrency" name="concurrency">
+          <option value="1">1 (gentlest on your connection)</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+
+      <h2>Subtitles</h2>
+      <div class="field">
+        <label for="subtitles">Save subtitles and captions</label>
+        <select id="subtitles" name="subtitles">
+          <option value="none">Don’t save subtitles</option>
+          <option value="default">Save the main track</option>
+          <option value="all">Save every language</option>
+        </select>
+        <p class="hint">Saved next to the video, named like <code>video.en.vtt</code>. Only when the video has them.</p>
+      </div>
+      <div class="field">
+        <label for="subtitleFormat">Subtitle format</label>
+        <select id="subtitleFormat" name="subtitleFormat">
+          <option value="vtt">WebVTT (.vtt)</option>
+          <option value="srt">SubRip (.srt), for editors and older players</option>
+        </select>
+      </div>
+
+      <div class="actions"><button id="reset" type="button" class="secondary">Restore defaults</button></div>
+    </form>
+
+    <section class="panel">
+      <h2>Keyboard shortcut</h2>
+      <p>Open Vimeo Grab with <kbd id="shortcut-2">Alt+Shift+V</kbd>. <button id="shortcuts" type="button" class="link">Change shortcut</button></p>
+    </section>
+
+    <section class="panel about">
+      <h2>About</h2>
+      <p>Vimeo Grab <span id="version"></span> runs entirely in your browser. It has no analytics, sends nothing to its
+        authors, and only talks to Vimeo. It won’t download DRM-protected videos or anything you can’t already watch.</p>
+      <p>Please only download videos you have the right to save. Vimeo Grab isn’t affiliated with or endorsed by Vimeo.</p>
+      <p class="links">
+        <a href="https://github.com/grantzerlaut/vimeo-grab" target="_blank" rel="noopener">Source code</a> ·
+        <a href="https://github.com/grantzerlaut/vimeo-grab/issues/new/choose" target="_blank" rel="noopener">Report a problem</a> ·
+        <a href="https://github.com/grantzerlaut/vimeo-grab/blob/main/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
+      </p>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,41 @@
+name: Bug report
+description: Something doesn’t work as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please don’t include links to private videos. A public video or page that shows the same problem is ideal.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you clicked, what you expected, and the exact message you saw.
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Public page or video link (optional)
+      placeholder: https://vimeo.com/…
+  - type: input
+    id: extension
+    attributes:
+      label: Vimeo Grab version
+      description: Shown at the bottom of the settings page.
+      placeholder: '2.0.0'
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      description: From chrome://version (e.g. Chrome 141 on Windows 11, Edge 140 on macOS).
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Errors from the extension (optional)
+      description: In chrome://extensions, click “Errors” on the Vimeo Grab card, or “Inspect views: service worker” and copy any red messages.
+      render: text

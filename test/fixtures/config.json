@@ -1,0 +1,40 @@
+{
+  "cdn_url": "https://f.vimeocdn.com",
+  "request": {
+    "files": {
+      "dash": {"cdns": {"akfire_interconnect_quic": {"url": "https://vod-adaptive-ak.vimeocdn.com/exp=1999999999~acl=%2Fabc~hmac=0/abc/v2/playlist/av/primary/playlist.json"}}},
+      "hls": {
+        "default_cdn": "fastly_skyfire",
+        "separate_av": true,
+        "cdns": {
+          "akfire_interconnect_quic": {
+            "avc_url": "https://vod-adaptive-ak.vimeocdn.com/exp=1999999999~acl=%2Fabc~hmac=0/abc/v2/playlist/av/primary/playlist.m3u8?omit=av1-hevc",
+            "url": "https://vod-adaptive-ak.vimeocdn.com/exp=1999999999~acl=%2Fabc~hmac=0/abc/v2/playlist/av/primary/playlist.m3u8"
+          },
+          "fastly_skyfire": {
+            "avc_url": "https://skyfire.vimeocdn.com/1999999999-0/abc/v2/playlist/av/primary/playlist.m3u8?omit=av1-hevc",
+            "url": "https://skyfire.vimeocdn.com/1999999999-0/abc/v2/playlist/av/primary/playlist.m3u8"
+          },
+          "evil": {"avc_url": "https://evil.example/playlist.m3u8"}
+        }
+      },
+      "progressive": []
+    },
+    "text_tracks": [
+      {"id": 101, "lang": "en", "url": "https://captions.vimeo.com/captions/101.vtt?expires=1999999999&sig=0", "kind": "subtitles", "label": "English", "default": true},
+      {"id": 102, "lang": "fr-CA", "url": "/texttrack/102.vtt?token=abc", "kind": "captions", "label": "Français (CC)"},
+      {"id": 103, "lang": "de", "url": "https://tracker.example/103.vtt", "kind": "subtitles", "label": "Deutsch"}
+    ]
+  },
+  "video": {
+    "id": 123456789,
+    "title": "  A   test video ~ with   spaces  ",
+    "duration": 5,
+    "width": 1920,
+    "height": 1080,
+    "thumbnail_url": "https://i.vimeocdn.com/video/1-abc-d",
+    "unlisted_hash": "ABCDEF1234",
+    "owner": {"name": "Test Studio"},
+    "live_event": null
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "vimeo-grab",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Chrome extension that finds Vimeo videos on a page and saves them as regular MP4 files.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "test:e2e": "node --test --test-concurrency=1 test/e2e/*.e2e.mjs",
+    "lint": "eslint .",
+    "check": "npm run lint && npm test && node scripts/check-manifest.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "puppeteer": "^25.15.0"
+  }
+}
