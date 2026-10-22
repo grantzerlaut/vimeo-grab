@@ -30,8 +30,7 @@ jobs:
       - name: Checksum and release notes
         run: |
           cd dist && sha256sum *.zip > SHA256SUMS.txt && cd ..
-          version="${GITHUB_REF_NAME#v}"
-          awk -v v="$version" '$0 ~ "^## \[" v "\]" {on=1; next} /^## \[/ {on=0} on' CHANGELOG.md > dist/notes.md
+          node scripts/release-notes.mjs "${GITHUB_REF_NAME#v}" > dist/notes.md
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release
